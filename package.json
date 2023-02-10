@@ -14,5 +14,9 @@
     "'HTML'"
   ],
   "author": "Elisa Levy",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pug": "^3.0.2"
+  }
 }
