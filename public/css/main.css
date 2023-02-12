@@ -2,6 +2,8 @@
     --purple: #DFC5DF;
     --lightGrey: rgb(230, 236, 240);
     --spacing: 15px;
+    --grayText: rgb(101, 119, 134);
+    --grayButtonText: rgb(0,0,0,0.34);
 }
 
 a {
@@ -42,6 +44,12 @@ nav a:hover {
     background-color: #d4edff;
     color: var(--purple);
     border-radius: 50%;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    color: var(--grayButtonText);
 }
 
 
@@ -110,3 +118,61 @@ nav a:hover {
     background-color: pink;
 }
 
+.post {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing);
+    cursor: pointer;
+    border-bottom: 1px solid var(--lightGrey);
+    flex-shrink: 0;
+}
+
+.mainContentContainer {
+    flex: 1;
+    display: flex;
+}
+
+.postContentContainer {
+    padding-left: var(--spacing);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.displayName {
+    font-weight: bold;
+}
+
+.username,
+.date {
+    color: var(--grayText)
+}
+
+.postFooter {
+    display: flex;
+    align-items: center;
+}
+
+.postFooter .postButtonContainer {
+    justify-content: flex-end;
+}
+
+.postFooter .postButtonContainer button {
+    padding: 2px 5px;
+    margin-left: auto;
+}
+
+.header a:hover {
+    text-decoration: underline;
+}
+
+.header a,
+.header span {
+    padding-right: 5px;
+}
+
+.postButtonContainer button:hover {
+    background-color: #d4edff;
+    color: var(--purple);
+    border-radius: 50%;
+}
