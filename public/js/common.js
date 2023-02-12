@@ -31,6 +31,33 @@ $("#submitPostButtom").click(() => {
     })
 })
 
+$(document).on("click", ".likeButton", (event) => {
+    const button = $(event.target);
+    const postId = getPostIdFromElement(button);
+    
+    if(postId === undefined) {
+        return;
+    }
+
+    $.ajax({
+        url: `/api/posts/${postId}/like`,
+        type: "PUT",
+        success: (postData) => {
+            console.log(postData)
+        }
+    })
+})
+
+function getPostIdFromElement(element) {
+    const isRoot = element.hasClass("post");
+    const rootElement = isRoot == true ? element : element.closest(".post");
+    const postId = rootElement.data().id;
+
+    if(postId === undefined) return alert("Post id undefined");
+
+    return postId;
+}
+
 function createPostHtml(postData) {
     
     var postedBy = postData.postedBy;
@@ -40,9 +67,9 @@ function createPostHtml(postData) {
     }
 
     var displayName = postedBy.firstName + " " + postedBy.lastName;
-    var timestamp = timeDifference(new Date(), new Date(postData.createdAt));
+    var timestamp = postData.createdAt;
 
-    return `<div class='post'>
+    return `<div class='post' data-id='${postData._id}'>
 
                 <div class='mainContentContainer'>
                     <div class='userImageContainer'>
@@ -59,7 +86,7 @@ function createPostHtml(postData) {
                         </div>
                         <div class='postFooter'>
                             <div class='postButtonContainer'>
-                                <button>
+                                <button class='likeButton'>
                                     <i class="fa-solid fa-heart"></i>
                                 </button>
                             </div>
@@ -71,6 +98,8 @@ function createPostHtml(postData) {
 
 function timeDifference(current, previous) {
 
+    console.log(current, previous);
+
     var msPerMinute = 60 * 1000;
     var msPerHour = msPerMinute * 60;
     var msPerDay = msPerHour * 24;
@@ -80,7 +109,7 @@ function timeDifference(current, previous) {
     var elapsed = current - previous;
 
     if (elapsed < msPerMinute) {
-        if(elapse/1000 < 30) return "Just now";
+        if(elapsed/1000 < 30) return "Just now";
 
         return Math.round(elapsed/1000) + ' seconds ago';   
     }
