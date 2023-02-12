@@ -141,6 +141,7 @@ button {
 
 .displayName {
     font-weight: bold;
+    text-decoration: none;
 }
 
 .username,
