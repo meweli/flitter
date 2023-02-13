@@ -1,0 +1,11 @@
+extends layouts/login-layout.pug 
+
+block content
+    .loginContainer
+        h1 Password recovery 
+        form(method="post")
+
+            p.errorMessage #{errorMessage}
+
+            input(type="email", name="logUsername", placeholder="user@example.com", value=logEmail required="")
+            input(type="submit", value="Send recovery email")

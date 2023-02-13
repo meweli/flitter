@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const User = require('../schemas/UserSchema')
 
+var profilePics= ["/images/profilePic.jpg", "/images/profilePic1.jpg", "/images/profilePic2.jpg", "/images/profilePic3.jpg"]
+
 app.set("view engine", "pug");
 app.set("views", "views");
 
@@ -22,6 +24,8 @@ router.post("/", async (req, res, next) => {
     const username = req.body.username.trim();
     const email = req.body.email.trim();
     const password = req.body.password;
+
+    var profilePic = profilePics[Math.floor(Math.random()*profilePics.length)];
 
     const payload = req.body;
 
@@ -46,6 +50,7 @@ router.post("/", async (req, res, next) => {
             const data = req.body;
 
             data.password = await bcrypt.hash(password, 10)
+            data.profilePic = profilePic
 
             User.create(data)
             .then((user) => {

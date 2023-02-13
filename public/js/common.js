@@ -91,6 +91,58 @@ $(document).on("click", ".post", (event) => {
     }
 });
 
+$(document).on("click", ".followButton", (event) => {
+    var button = $(event.target);
+    var userId = button.data().user;
+
+    $.ajax({
+        url: `/api/users/${userId}/follow`,
+        type: "PUT",
+        success: (data, status, xhr) => {
+            
+            if (xhr.status == 404) {
+                alert("User not found");
+                return;
+            }
+
+            var difference = 1;
+
+            if (data.following && data.following.includes(userId)) {
+                button.addClass("following");
+                button.text("Following");
+            } else {
+                button.removeClass("following");
+                button.text("Follow");
+                difference = -1
+            }
+
+            var followersLabel = $("#followersValue");
+            if (followersLabel.length != 0) {
+                var followersText = followersLabel.text();
+                followersLabel.text(parseInt(followersText) + difference)
+            }
+
+        }
+    })
+});
+
+function outputPosts(results, container) {
+    container.html("");
+
+    if(!Array.isArray(results)) {
+        results = [results];
+    }
+
+    results.forEach(result => {
+        var html = createPostHtml(result)
+        container.append(html);
+    });
+
+    if (results.length == 0) {
+        container.append("<span class='noResults'>Nothing to show.</span>")
+    }
+}
+
 function getPostIdFromElement(element) {
     const isRoot = element.hasClass("post");
     const rootElement = isRoot == true ? element : element.closest(".post");
@@ -186,3 +238,96 @@ function timeDifference(current, previous) {
         return Math.round(elapsed/msPerYear ) + ' years ago';   
     }
 }
+
+
+function outputUsers(results, container) {
+    container.html("");
+
+    results.forEach(result => {
+        var html = createUserHtml(result, true);
+        container.append(html);
+    });
+
+    if(results.length == 0) {
+        container.append("<span class='noResults'>No results found</span>")
+    }
+}
+
+function createUserHtml(userData, showFollowButton) {
+
+    var name = userData.firstName + " " + userData.lastName;
+    var isFollowing = userLoggedIn.following && userLoggedIn.following.includes(userData._id);
+    var text = isFollowing ? "Following" : "Follow"
+    var buttonClass = isFollowing ? "followButton following" : "followButton"
+
+    var followButton = "";
+    if (showFollowButton && userLoggedIn._id != userData._id) {
+        followButton = `<div class='followButtonContainer'>
+                            <button class='${buttonClass}' data-user='${userData._id}'>${text}</button>
+                        </div>`;
+    }
+
+    return `<div class='user'>
+                <div class='userImageContainer'>
+                    <img src='${userData.profilePic}'>
+                </div>
+                <div class='userDetailsContainer'>
+                    <div class='header'>
+                        <a href='/profile/${userData.username}'>${name}</a>
+                        <span class='username'>@${userData.username}</span>
+                    </div>
+                </div>
+                ${followButton}
+            </div>`;
+}
+
+
+$(document).on("click", ".removeAccountButton", (event) => {
+
+    var button = $(event.target);
+    var userId = button.data().user;
+
+    $.get("/api/posts", { postedBy: userId }, results => {
+        results.forEach(result => {
+            $.ajax({
+                url: `/api/posts/${result._id}`,
+                type: "DELETE",
+                success: (data, status, xhr) => {
+                    if(xhr.status != 202) {
+                        alert("Could not delete post");
+                        return;
+                    }
+                }
+            })
+        });
+    })
+
+    $.ajax({
+        url: `/api/users/${userId}`,
+        type: "DELETE",
+        success: (data, status, xhr) => {
+
+            if (xhr.status != 202) {
+                alert("Could not delete account");
+                return;
+            }
+            
+        }
+    })
+
+    $.ajax({
+        url: `/login`,
+        type: "get",
+        success: (data, status, xhr) => {
+
+            if (xhr.status != 202) {
+                alert("Account and related info. successfully deleted.");
+                return;
+            }
+            
+        }
+    })
+
+    event.re
+
+})

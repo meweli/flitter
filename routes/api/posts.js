@@ -7,18 +7,17 @@ const Post = require('../../schemas/PostSchema');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-router.get("/", (req, res, next) => {
-    Post.find()
-    .populate("postedBy")
-    .sort({"createdAt": -1 })
-    .then(results => {
-        res.status(200).send(results);
-    })
-    .catch(error => {
-        console.log(error);
-        res.sendStatus(400);
-    })
-    
+router.get("/", async (req, res, next) => {
+
+    var searchObj = req.query;
+
+    if (searchObj.search !== undefined) {
+        searchObj.content = {$regex: searchObj.search, $options: "i"}
+        delete searchObj.search;
+    }
+
+    var results = await getPosts(searchObj);
+    res.status(200).send(results);
 })
 
 router.post("/", async (req, res, next) => {
@@ -71,5 +70,23 @@ router.put("/:id/like", async (req, res, next) => {
 
     res.status(200).send(post)
 })
+
+router.delete("/:id", (req, res, next) => {
+    Post.findByIdAndDelete(req.params.id)
+    .then(() => res.sendStatus(202))
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+})
+
+async function getPosts(filter) {
+    var results = await Post.find(filter)
+    .populate("postedBy")
+    .sort({ "createdAt": -1 })
+    .catch(error => console.log(error))
+
+    return await User.populate(results, { path: "postData.postedBy"});
+}
 
 module.exports = router;

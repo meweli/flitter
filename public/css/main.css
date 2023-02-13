@@ -292,3 +292,81 @@ button span {
     color: var(--purple);
     background-color: var(--purpleBackground);
 }
+
+
+.noResults {
+    padding: var(--spacing);
+}
+
+.resultsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.resultsContainer .user {
+    padding: var(--spacing);
+    display: flex;
+    border-bottom: 1px solid var(--lightGrey);
+}
+
+.user .userDetailsContainer {
+    flex: 1;
+    padding: 0 var(--spacing)
+}
+
+.profilePictureButton,
+.coverPhotoButton {
+    position: absolute;
+    font-size: 50px;
+    color: rgba(0,0,0,0.6);
+    display: none;
+}
+
+.userImageContainer:hover .profilePictureButton,
+.coverPhotoSection:hover .coverPhotoButton {
+    display: block;
+}
+
+.coverPhotoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.coverPhotoContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#imagePreview,
+#coverPreview {
+    width: 100%;
+    display: block;
+ 
+    /* This rule is very important, please don't ignore this */
+    max-width: 100%;
+}
+
+.searchBarContainer {
+    position: relative;
+    color: var(--greyText);
+    padding: 10px var(--spacing);
+}
+
+.searchBarContainer i {
+    position: absolute;
+    top: 20px;
+    left: 28px;
+}
+
+.searchBarContainer #searchBox {
+    height: 36px;
+    width: 100%;
+    padding: 5px 15px 5px 40px;
+    border-radius: 50px;
+    background-color: var(--lightGrey);
+    border: none;
+    color: var(--grayText);
+}

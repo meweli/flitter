@@ -16,16 +16,18 @@ mixin createDeletePostModal()
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
-                    p You won't be able to delete this.
+                    p You won't be able to undo this.
                 .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Close
                     button#deletePostButton.btn.btn-primary(type='button') Delete
-
 
 mixin createFollowButton(user, isFollowing)
     - text = isFollowing ? "Following" : "Follow"
     - buttonClass = isFollowing ? "followButton following" : "followButton"
     button(class=buttonClass, data-user=user._id) #{text}
+
+mixin createRemoveAccButton(user)
+    button(class="removeAccountButton", data-user=user._id) #{"Delete account"}
 
 mixin createTab(name, href, isSelected)
     - className = isSelected ? "tab active" : "tab"
