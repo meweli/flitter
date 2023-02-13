@@ -185,3 +185,11 @@ button span {
 .postButtonContainer.red button.active {
     color: red;
 }
+
+.postContentContainer .header {
+    display: flex;
+}
+
+.postContentContainer .header .date {
+    flex: 1;
+}
