@@ -22,7 +22,7 @@ $("#submitPostButtom").click(() => {
         content: textbox.val()
     }
 
-    $.post("/api/posts", data, (postData, status, xhr) => {
+    $.post("/api/posts", data, (postData) => {
 
         const html = createPostHtml(postData);
         $(".postsContainer").prepend(html);
@@ -43,10 +43,29 @@ $(document).on("click", ".likeButton", (event) => {
         url: `/api/posts/${postId}/like`,
         type: "PUT",
         success: (postData) => {
-            console.log(postData)
+            
+            button.find("span").text(postData.likes.length || "");
+
+            if(postData.likes.includes(userLoggedIn._id)) {
+                button.addClass("active");
+            }
+            else {
+                button.removeClass("active");
+            }
+
         }
     })
+
 })
+
+$(document).on("click", ".post", (event) => {
+    const element = $(event.target);
+    const postId = getPostIdFromElement(element);
+
+    if(postId !== undefined && !element.is("button")) {
+        window.location.href = '/posts/' + postId;
+    }
+});
 
 function getPostIdFromElement(element) {
     const isRoot = element.hasClass("post");
@@ -69,6 +88,13 @@ function createPostHtml(postData) {
     var displayName = postedBy.firstName + " " + postedBy.lastName;
     var timestamp = postData.createdAt;
 
+    var likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : "";
+
+    var buttons = "";
+    if (postData.postedBy._id == userLoggedIn._id) {
+        buttons = `<button data-id="${postData._id}" data-toggle="modal" data-target="#deletePostModal"><i class='fas fa-times'></i></button>`;
+    }
+
     return `<div class='post' data-id='${postData._id}'>
 
                 <div class='mainContentContainer'>
@@ -80,14 +106,16 @@ function createPostHtml(postData) {
                             <a href='/profile/${postedBy.username}'class='displayName'>${displayName}</a>
                             <span class='username'>@${postedBy.username}</span>
                             <span class='date'>${timestamp}</span>
+                            ${buttons}
                         </div>
                         <div class='postBody'>
                             <span>${postData.content}</span>
                         </div>
                         <div class='postFooter'>
-                            <div class='postButtonContainer'>
-                                <button class='likeButton'>
+                            <div class='postButtonContainer red'>
+                                <button class='likeButton ${likeButtonActiveClass}'>
                                     <i class="fa-solid fa-heart"></i>
+                                    <span>${postData.likes.length || ""}</span>
                                 </button>
                             </div>
                         </div>

@@ -52,6 +52,11 @@ button {
     color: var(--grayButtonText);
 }
 
+button i,
+button span {
+    pointer-events: none;
+}
+
 
 .mainSectionContainer {
     padding: 0;
@@ -151,16 +156,15 @@ button {
 
 .postFooter {
     display: flex;
-    align-items: center;
 }
 
 .postFooter .postButtonContainer {
-    justify-content: flex-end;
+    flex: 1;
+    display: flex;
 }
 
 .postFooter .postButtonContainer button {
     padding: 2px 5px;
-    margin-left: auto;
 }
 
 .header a:hover {
@@ -176,4 +180,8 @@ button {
     background-color: #d4edff;
     color: var(--purple);
     border-radius: 50%;
+}
+
+.postButtonContainer.red button.active {
+    color: red;
 }
