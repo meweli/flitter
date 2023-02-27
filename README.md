@@ -1,3 +1,6 @@
+<p align = "center">
+    <img src="https://svgtopng.com/download/ant10pp1npk1dse1/file_13os1tn01ad41oi1utm1203kf3/cat-solid.png" width="115"/>
+    
 # Flitter
 ## _Express your thoughts online_
 
