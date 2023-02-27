@@ -1,6 +1,6 @@
 <p align = "center">
     <img src="https://svgtopng.com/download/ant10pp1npk1dse1/file_13os1tn01ad41oi1utm1203kf3/cat-solid.png" width="115"/>
-    
+
 # Flitter
 ## _Express your thoughts online_
 
@@ -18,6 +18,7 @@ Flitter is a Twitter clone created for the Web Development Bootcamp final projec
 - Access to users' profiles and posts.
 - Search users and posts by keywords. 
 - Delete your account. All your personal information will be deleted from the database, as well as your posts.
+- Logout from your account.
 
 ## Yet to implement
 
